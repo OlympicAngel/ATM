@@ -1,0 +1,322 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400&display=swap');
+
+* {
+    box-sizing: content-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(229, 218, 235);
+
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    font-weight: 200;
+    font-size: 1.1em;
+
+    min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    text-shadow: 0 0.2em 0.3em #000000b8;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+}
+
+.warp {
+    flex-wrap: wrap;
+}
+
+.halfGap {
+    gap: 0.5em;
+}
+
+a {
+    color: #69cdff;
+    font-weight: 900;
+}
+
+sub {
+    font-size: 0.75em;
+    opacity: 0.8;
+}
+
+main {
+    height: 100vh;
+}
+
+main::after,
+main::before {
+    content: "";
+    background-color: rgb(187, 172, 216);
+    display: block;
+    width: 60vw;
+    height: 40vh;
+    max-height: 50vmin;
+
+    box-shadow: inset -1vmin -1vmin 0 0.5vmin rgb(175, 158, 207);
+
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+
+    border-radius: 15vw/30vmin;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 50%;
+
+    --dir: -1;
+    animation: float 5s infinite alternate-reverse ease;
+}
+
+main::before {
+    --dir: 1;
+    animation-direction: alternate;
+    top: auto;
+    left: auto;
+
+    border-radius: 10vw/20vh;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 30%;
+    border-top-left-radius: 85%;
+}
+
+@keyframes float {
+    0% {
+        transform: translateX(0);
+    }
+
+    30% {
+        transform: translate(calc(var(--dir) * 0.5%), calc(var(--dir) * 2%));
+    }
+
+    100% {
+        transform: translateX(calc(var(--dir) * 2%));
+    }
+}
+
+.atm {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 85vw;
+    height: 85vh;
+    background-color: #2f1d67;
+    background: radial-gradient(rgb(48 29 103 / 96%), #291f3a);
+    border-radius: 3vmin;
+    box-shadow: 0 1vmin 10vmin #baa8de;
+    padding: 2em;
+    flex-direction: column;
+}
+
+.header {
+    width: inherit;
+    height: fit-content;
+}
+
+.header>* {
+    height: fit-content;
+}
+
+.header h1 {
+    margin: 0;
+    letter-spacing: 0.2vmin;
+    font-weight: 400;
+}
+
+.logo {
+    color: aquamarine;
+    border-radius: 0.1em 0.4em;
+    padding: 0.25em;
+    border: outset #4d8ffd;
+    border-width: 0 0 0.2em 0.2em;
+    text-shadow: 0 0.1em BLACK;
+    box-shadow: -0.1em 0.1em #ffffff;
+}
+
+.displayName {
+    display: inline-block;
+    text-decoration: underline;
+    letter-spacing: 0.1vmin;
+}
+
+.time {
+    font-size: 1.5em;
+}
+
+.content {
+    width: inherit;
+    height: -webkit-fill-available;
+    position: relative;
+}
+
+.footer {
+    width: inherit;
+    text-align: left;
+    font-weight: 100;
+    opacity: 0.75;
+}
+
+input[name="screens"] {
+    display: none;
+}
+
+input[name="screens"]:checked+div.screen {
+    opacity: 1;
+    pointer-events: all;
+    transform: scale(1);
+    transition-delay: 0.2s;
+}
+
+.screen {
+    transition: 0.2s;
+    transition-delay: 0s;
+    opacity: 0;
+    transform: scale(0.98);
+    pointer-events: none;
+
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+button,
+input {
+    outline: none;
+    font-weight: 900;
+    font-family: inherit;
+    font-size: 1.2em;
+    padding: 0.3em 1.5em;
+    letter-spacing: 0.1em;
+    border: unset;
+    box-shadow: 0 0.4em 0.4em -0.3em #000;
+    cursor: pointer;
+    transition: 0.1s;
+    margin: 0.5em auto;
+}
+
+
+button {
+    background: linear-gradient(145deg, #459fff, #2646fc);
+    transition: 0.1s;
+    color: #fff;
+    text-shadow: -0.1em 0.15em #000;
+    border-radius: 100vmin;
+}
+
+button:hover {
+    background: linear-gradient(145deg, #69cdff, #455ff4);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+@media only screen and (max-width: 600px) {
+    .atm {
+        width: -webkit-fill-available;
+        height: 95vh;
+        margin: auto 0.5em;
+        padding: 1em;
+    }
+
+    .mobileBreak {
+        flex-direction: column;
+    }
+
+    .mobileHide {
+        display: none;
+    }
+}
+
+#manualForm {
+    display: none;
+}
+
+#creditCardList {
+    overflow: initial;
+    height: inherit;
+    overflow-x: auto;
+    padding: 1vmin;
+    justify-content: center;
+    align-content: space-between;
+    min-width: calc(300px);
+}
+
+.ccView {
+    --bg: red;
+    width: 45%;
+    max-width: 20vw;
+    min-width: 260px;
+    aspect-ratio: 2;
+    background: linear-gradient(135deg, #00000025, rgba(0, 0, 0, 0.6));
+    background-color: var(--bg);
+    border-radius: 1vmin;
+    flex-direction: column;
+    padding: 0.5em;
+    gap: 0;
+    align-items: flex-start;
+    text-shadow: 0 0.1em 0.5em #000;
+    border-top: 0.1em #fff solid;
+    border-bottom: 0.15em #000 solid;
+    cursor: pointer;
+}
+
+#namePlaceholder,
+#namePlaceholder * {
+    cursor: default;
+}
+
+.ccView * {
+    cursor: pointer;
+}
+
+.ccView:not(#namePlaceholder):hover {
+    transform: scale(1.02);
+    box-shadow: 0 1em 1em -1em #000;
+}
+
+.ccView:not(#namePlaceholder):active {
+    transform: scale(0.99);
+}
+
+.ccView:nth-child(3n+1) {
+    --bg: lightgray
+}
+
+.ccView:nth-child(3n) {
+    --bg: lime
+}
+
+.ccView::before {
+    content: "  ";
+    font-family: "Font Awesome 6 Brands";
+    font-size: 2em;
+    text-shadow: none;
+    mix-blend-mode: overlay;
+    color: #000;
+    display: block;
+    width: 100%;
+    background: linear-gradient(0deg, white 0.8em, transparent 0%);
+    height: 2em;
+}
+
+.ccView .space {
+    flex: 1;
+}
+
+.ccView .number {
+    letter-spacing: 0.1em;
+    font-weight: 900;
+    font-size: 1.5em;
+    font-family: 'Courier New', Courier, monospace;
+}

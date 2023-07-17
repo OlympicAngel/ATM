@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="account.js"></script>
+</head>
+
+<body>
+    <main>
+        <div class="atm flex">
+            <div class="header flex">
+                <h1><i class="fa-solid fa-building-columns logo"></i> Fake Bank of Israel</h1>
+                <div class="flex mobileBreak">
+                    <span class="displayName">Hello Guest</span>
+                    <span class="mobileHide">|</span>
+                    <div class="flex halfGap">
+                        <span id="timeView" class="time"></span>
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <input id="login_screen" type="radio" name="screens" checked>
+                <div class="screen flex mobileBreak">
+                    <div style="min-width: 40vw;">
+                        <h1>Welcome Guest!</h1>
+                        <p>Please choose a credit card or input your info manually below:</p>
+                        <button
+                            onclick="this.style.display='none'; manualForm.style.display = 'block'; manualInput.focus();">Enter
+                            Manually</button>
+                        <form id="manualForm" class="flex"
+                            onsubmit="event.preventDefault(); loadLoginScreen(manualInput.value)">
+                            <input id="manualInput" required placeholder="Enter you full name.." minlength="3">
+                            <button>Next..</button>
+                        </form>
+                    </div>
+                    <div id="creditCardList" class="flex warp">
+                        Dynamic load from js
+                    </div>
+
+                </div>
+
+                <input id="pincode_screen" type="radio" name="screens" onclick="onPincodeScreenLoad()">
+                <div class="screen flex">
+                    <div>
+                        <h2>Welcome Back MR/MISS <spam id="namePlaceholder">REPLACE ME</spam>!
+                        </h2>
+                        <p>We just need to verify its really you!<br>
+                            Please enter your credit card associated PIN CODE below:
+
+                        </p>
+
+                        <form class="flex">
+                            <input placeholder="Insert PIN CODE..." type="password">
+                            <button>Verify!</button>
+                        </form>
+                    </div>
+
+                    <div>
+                        <div class="ccView" id="ccViewPincode"
+                            style="width: 100%; font-size: 2.5vmin; max-width: none;"></div>
+                        <sub>*If you believe this card was stolen or possessed by others please report to as at
+                            <a href="tel:*420-69-777">*420-69-777</a>.</sub>
+                    </div>
+
+                </div>
+
+                <input id="menu_screen" type="radio" name="screens">
+                <div class="screen">
+                    menu here
+                </div>
+
+            </div>
+            <div class="footer">
+                <i class="fa-solid fa-fingerprint"></i> This is a bank simulation & you should never input your real
+                info!
+            </div>
+        </div>
+    </main>
+
+    <script src="atm.js"></script>
+</body>
+
+</html>
