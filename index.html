@@ -36,7 +36,7 @@
                         <button
                             onclick="this.style.display='none'; manualForm.style.display = 'block'; manualInput.focus();">Enter
                             Manually</button>
-                        <form id="manualForm" class="flex"
+                        <form id="manualForm" class="flex mobileBreak"
                             onsubmit="event.preventDefault(); loadLoginScreen(manualInput.value)">
                             <input id="manualInput" required placeholder="Enter you full name.." minlength="3">
                             <button>Next..</button>
@@ -49,7 +49,7 @@
                 </div>
 
                 <input id="pincode_screen" type="radio" name="screens" onclick="onPincodeScreenLoad()">
-                <div class="screen flex">
+                <div class="screen flex mobileBreak">
                     <div>
                         <h2>Welcome Back MR/MISS <spam id="namePlaceholder">REPLACE ME</spam>!
                         </h2>
@@ -58,7 +58,7 @@
 
                         </p>
 
-                        <form class="flex">
+                        <form class="flex mobileBreak">
                             <input placeholder="Insert PIN CODE..." type="password">
                             <button>Verify!</button>
                         </form>
