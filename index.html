@@ -58,8 +58,9 @@
 
                         </p>
 
-                        <form class="flex mobileBreak">
-                            <input placeholder="Insert PIN CODE..." type="password">
+                        <form class="flex mobileBreak" onsubmit="event.preventDefault(); verifyPincode(pincode.value)">
+                            <input placeholder="Insert PIN CODE..." type="password" id="pincode" required minlength="4"
+                                maxlength="4">
                             <button>Verify!</button>
                         </form>
                     </div>

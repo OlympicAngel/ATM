@@ -24,7 +24,7 @@ function createCardHTML(account) {
     el.className = "ccView flex";
     el.innerHTML = `<div class="space"></div>
         <label class="number">${account.cardNumber.slice(0, 4) + " " + account.cardNumber.slice(4, 8) + " " + account.cardNumber.slice(8, 12)}</label>
-        <label class="name">${account.name}</label>`;
+        <label class="name" pin="${account.pincode}">${account.name}</label>`;
     return el;
 }
 
@@ -76,3 +76,12 @@ function onPincodeScreenLoad() {
 
 // indicates id currently a user is logged in - used to block onkeys event when not needded
 let loggedIn = false;
+
+function verifyPincode(code) {
+    const isCorrectPincode = code == currentUser.pincode;
+    if (!isCorrectPincode)
+        return alert("Wrong pincode!!\n(Hint: the code is shown on bottom right on the credit card)")
+
+    document.querySelector("#menu_screen").click();
+
+}
