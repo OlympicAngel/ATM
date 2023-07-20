@@ -42,14 +42,16 @@ function loadCardsView() {
 loadCardsView();
 
 /** @type {Account} stores the current logged in user*/
-let currentUser = users[0];
+let currentUser;
 /**
  * searches for an account by files / value
  * @param {String} searchTerm 
  * @param {String} field 
  */
 function loadLoginScreen(searchTerm, field = "name") {
+    console.log(searchTerm)
     const user = users.find(acc => acc[field]?.toLowerCase() == searchTerm.toLowerCase());
+    console.log(user)
     if (user) {
         //sets current user fo later use
         currentUser = user;
@@ -71,7 +73,7 @@ function onPincodeScreenLoad() {
     const ccViewPincode = document.querySelector("#ccViewPincode");
     const newCradView = createCardHTML(currentUser);
     newCradView.setAttribute("style", ccViewPincode.getAttribute("style"));
-    newCradView.id = "namePlaceholder"
+    newCradView.setAttribute("id", "ccViewPincode")
     ccViewPincode.replaceWith(newCradView)
 }
 
@@ -81,6 +83,8 @@ function verifyPincode(code) {
     const isCorrectPincode = code == currentUser.pincode;
     if (!isCorrectPincode)
         return alert("Wrong pincode!!\n(Hint: the code is shown on bottom right on the credit card)")
+
+    document.getElementById("pincode").value = "";
 
     //on good login
     document.querySelector("#menu_screen").click();
@@ -156,6 +160,13 @@ function atmShow(page) {
             <h2><i class="fa-solid fa-money-bill-trend-up"></i> Balance Check:</h2>
                 <p>Your current balance stands on:</p>
                 <div class="currentBalance">${currentUser.balance.toLocaleString()}₪</div>`
+            break;
+
+        case "quit":
+            allowKeybinds = false; //block binds
+            currentUser = null; //remove current
+            document.querySelector(".header .displayName").innerText = "Hello Guest"
+            login_screen.click() //show login screen
             break;
     }
 }
