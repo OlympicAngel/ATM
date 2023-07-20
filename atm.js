@@ -94,11 +94,13 @@ function atmShow(page) {
     //clear current style
     document.querySelectorAll(`.atmNav label`).forEach(label => label.classList.remove("current"))
     //add style to current
-    document.querySelector(`[onclick="atmShow('${page}')"]`)?.classList.add("current")
+    document.querySelector(`[onclick="atmShow('${page}')"]`)?.classList.add("current");
+
+    const container = document.querySelector(".dynContent");
     switch (page) {
         case "home":
             allowKeybinds = true;
-            document.querySelector(".dynContent").innerHTML = `
+            container.innerHTML = `
             <h2>ATM MENU:</h2>
             <p>To interact with the ATM you can click on the menu above, OR press user shortcuts on your keyboard:</p>
             <h4>Shortcuts Cheat-Sheet:</h4>
@@ -111,30 +113,80 @@ function atmShow(page) {
             </ul>`
             break;
 
-    }
-    allowKeybinds = true;
-}
-document.addEventListener("keydown",
-    /** @param {KeyboardEvent} e */
-    (e) => {
-        if (!allowKeybinds)
-            return;
+        case "deposit":
+            container.innerHTML = `
+            <div class="flex breakMobile">
+                <div>
+                    <h2><i class="fa-solid fa-money-bills"></i> Deposit:</h2>
+                    <p>You may deposit here money into your account,<br>
+                    <strong>Notice:</strong> you can only deposit bills of <strong>20 / 50 / 100 / 200<strong>.</p>
+                </div>
+                <form id="depositForm" onsubmit="event.preventDefault(); atmDeposit(depositValue.value)">
+                    <p>How much would you like to Deposit?</p>
+                    <input id="depositValue" required placeholder="20 / 50 / 100 / 200 ...">
+                    <button>Deposit</button>
+                </form>
+            </div>`
+            break;
 
-        switch (e.key) {
-            case "d":
-                atmShow("deposit")
-                break;
-            case "w":
-                atmShow("withdraw")
-                break;
-            case "c":
-                atmShow("check")
-                break;
-            case "p":
-                atmShow("pincode")
-                break;
-            case "q":
-                atmShow("quit")
-                break;
-        }
-    })
+        case "withdraw":
+            container.innerHTML = `
+            <div class="flex breakMobile">
+                <div>
+                    <h2><i class="fa-solid fa-money-bill-transfer"></i> Withdraw:</h2>
+                    <p>You may deposit here money into your account,<br>
+                    <strong>Notice:</strong> you can only deposit bills of <strong>20 / 50 / 100 / 200<strong>.</p>
+                </div>
+                <form id="depositForm" onsubmit="event.preventDefault(); atmDeposit(depositValue.value)">
+                    <p>How much would you like to Deposit?</p>
+                    <input id="depositValue" required placeholder="20 / 50 / 100 / 200 ...">
+                    <button>Deposit</button>
+                </form>
+            </div>`
+            break;
+    }
+}
+document.addEventListener("keydown", (e) => {
+    if (!allowKeybinds)
+        return;
+
+    switch (e.key) {
+        case "d":
+            atmShow("deposit")
+            break;
+        case "w":
+            atmShow("withdraw")
+            break;
+        case "c":
+            atmShow("check")
+            break;
+        case "p":
+            atmShow("pincode")
+            break;
+        case "q":
+            atmShow("quit")
+            break;
+    }
+})
+
+async function atmDeposit(amount) {
+    if (amount <= 0)
+        return;
+    //check if the amount can be just from 20s
+    const multiply20 = amount % 20 == 0;
+    //if the amount is more then 50 AND its modulo is 10 then the amount is combination of 1*50 & X*20
+    const combinationOf20n50 = amount % 20 == 10 && amount >= 50;
+    if (!multiply20 && !combinationOf20n50)
+        return alert("You can only deposit amount in bills..\n(using 20 / 50 / 100 / 200)")
+
+    document.getElementById("depositForm").innerHTML = `
+    <div style="text-align:center">
+        <i class="fa-solid fa-spinner fa-spin-pulse fa-10x"></i>
+        <p>Depositing to your account: ${amount.toLocaleString()}$, Please wait...</p>
+    </div>`;
+    currentUser.balance += amount;
+    await sleep(1000);
+    atmShow("home")
+}
+
+const sleep = async ms => new Promise(res => setTimeout(res, ms))
