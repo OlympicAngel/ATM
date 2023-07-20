@@ -391,4 +391,16 @@ button:active {
 
 .dynContent {
     padding: 1em;
+    min-height: 50vmin;
+}
+
+.currentBalance {
+    text-align: center;
+    font-size: 4em;
+    font-weight: 900;
+    color: lime;
+    background: radial-gradient(black, transparent);
+    padding: 0.5em;
+    border-radius: 1em;
+    border: solid;
 }

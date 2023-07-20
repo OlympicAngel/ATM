@@ -90,7 +90,6 @@ function verifyPincode(code) {
 //indicates if key down events will trigger binds
 let allowKeybinds = false;
 function atmShow(page) {
-    allowKeybinds = false;
     //clear current style
     document.querySelectorAll(`.atmNav label`).forEach(label => label.classList.remove("current"))
     //add style to current
@@ -116,17 +115,17 @@ function atmShow(page) {
         case "deposit":
             container.innerHTML = `
              <h2><i class="fa-solid fa-money-bills"></i> Deposit:</h2>
-            <div class="flex mobileBreak">
-                <div>
+               <div class="flex mobileBreak">
                     <p>You may deposit here money into your account,<br>
-                    <strong>Notice:</strong> you can only deposit bills of <strong>20₪ / 50₪ / 100₪ / 200₪<strong>.</p>
+                    <strong>Notice:</strong> you can only deposit bills of <strong>20₪ / 50₪ / 100₪ / 200₪</strong>.</p>
+                                    ${createCardHTML(currentUser).outerHTML}
+
                 </div>
                 <form id="depositForm" onsubmit="event.preventDefault(); atmDeposit(depositValue.value)">
-                    <p>How much would you like to Deposit?</p>
+                    <h3>How much would you like to Deposit?</h3>
                     <input id="depositValue" required placeholder="20 / 50 / 100 / 200 ...">
                     <button>Deposit</button>
                 </form>
-            </div>
             <hr>
             <p style="text-align:center">No hidden fees! no risky staff here.. just you know.. give us your money! we will keep it for you ♥</p>`
             break;
@@ -134,11 +133,13 @@ function atmShow(page) {
         case "withdraw":
             container.innerHTML = `
             <h2><i class="fa-solid fa-money-bill-transfer"></i> Withdraw:</h2>
-            <div>
+            <div class="flex mobileBreak">
                 <p>You may withdraw your money into cash!<br>
-                Choose the amount you want:</p>
+                No fees, n limits! you just need to have that amount of money..</p>
+                  ${createCardHTML(currentUser).outerHTML}
             </div>
-            <div class="flex mobileBreak" id="withdrawOptions">
+            <h3>Choose withdrawal amount:</h3>
+            <div class="flex mobileBreak warp" id="withdrawOptions">
                 <button onclick="atmWithdraw(50)">50₪</button>
                 <button onclick="atmWithdraw(100)">100₪</button>
                 <button onclick="atmWithdraw(150)">150₪</button>
@@ -148,6 +149,13 @@ function atmShow(page) {
                     <button>Withdraw</button>
                 </form>
             </div>`
+            break;
+
+        case "check":
+            container.innerHTML = `
+            <h2><i class="fa-solid fa-money-bill-trend-up"></i> Balance Check:</h2>
+                <p>Your current balance stands on:</p>
+                <div class="currentBalance">${currentUser.balance.toLocaleString()}₪</div>`
             break;
     }
 }
@@ -177,6 +185,7 @@ document.addEventListener("keydown", (e) => {
 async function atmDeposit(amount) {
     if (amount <= 0)
         return;
+
     amount = Number(amount)
     //check if the amount can be just from 20s
     const multiply20 = amount % 20 == 0;
@@ -184,6 +193,8 @@ async function atmDeposit(amount) {
     const combinationOf20n50 = amount % 20 == 10 && amount >= 50;
     if (!multiply20 && !combinationOf20n50)
         return alert("You can only deposit amount in bills..\n(using 20 / 50 / 100 / 200)")
+
+    allowKeybinds = false;
 
     document.getElementById("depositForm").innerHTML = `
     <div style="text-align:center">
@@ -201,6 +212,8 @@ async function atmWithdraw(amount) {
 
     if (currentUser.balance < amount)
         return alert("You don't have enough in your Balance for this operation!")
+
+    allowKeybinds = false;
 
     document.getElementById("withdrawOptions").innerHTML = `
     <div style="text-align:center; width:100%">
