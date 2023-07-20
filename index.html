@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="content">
+            <div class="content flex">
                 <input id="login_screen" type="radio" name="screens" checked>
                 <div class="screen flex mobileBreak">
                     <div style="min-width: 40vw;">
@@ -74,15 +74,25 @@
 
                 </div>
 
-                <input id="menu_screen" type="radio" name="screens">
-                <div class="screen">
-                    menu here
+                <input id="menu_screen" type="radio" name="screens" checked>
+                <div class="screen flex mainView">
+                    <div class="atmNav flex">
+                        <label onclick="atmShow('home')"><i class="fa-solid fa-house"></i></label>
+                        <label onclick="atmShow('deposit')">Deposit</label>
+                        <label onclick="atmShow('withdraw')">Withdraw</label>
+                        <label onclick="atmShow('check')">Check</label>
+                        <label onclick="atmShow('pincode')">Pin Code</label>
+                        <label onclick="atmShow('quit')">Quit</label>
+                    </div>
+                    <div class="dynContent">
+
+                    </div>
                 </div>
 
             </div>
             <div class="footer">
                 <i class="fa-solid fa-fingerprint"></i> This is a bank simulation & you should never input your real
-                info!
+                info! <i class="fa-solid fa-face-smile-wink"></i>
             </div>
         </div>
     </main>

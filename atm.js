@@ -42,7 +42,7 @@ function loadCardsView() {
 loadCardsView();
 
 /** @type {Account} stores the current logged in user*/
-let currentUser;
+let currentUser = users[0];
 /**
  * searches for an account by files / value
  * @param {String} searchTerm 
@@ -65,7 +65,8 @@ function loadLoginScreen(searchTerm, field = "name") {
 //triggers when loading pincode screen
 function onPincodeScreenLoad() {
     //update greeting name
-    document.querySelector("#pincode_screen + .screen #namePlaceholder").innerText = currentUser.name.toUpperCase()
+    document.querySelector("#pincode_screen + .screen #namePlaceholder").innerText = currentUser.name.toUpperCase();
+    document.querySelector(".header .displayName").innerText = "Hello " + currentUser.name;
     //copy & replace credit card view
     const ccViewPincode = document.querySelector("#ccViewPincode");
     const newCradView = createCardHTML(currentUser);
@@ -74,14 +75,66 @@ function onPincodeScreenLoad() {
     ccViewPincode.replaceWith(newCradView)
 }
 
-// indicates id currently a user is logged in - used to block onkeys event when not needded
-let loggedIn = false;
 
+/** on user enter pincode */
 function verifyPincode(code) {
     const isCorrectPincode = code == currentUser.pincode;
     if (!isCorrectPincode)
         return alert("Wrong pincode!!\n(Hint: the code is shown on bottom right on the credit card)")
 
+    //on good login
     document.querySelector("#menu_screen").click();
-
+    atmShow("home")
 }
+
+//indicates if key down events will trigger binds
+let allowKeybinds = false;
+function atmShow(page) {
+    allowKeybinds = false;
+    //clear current style
+    document.querySelectorAll(`.atmNav label`).forEach(label => label.classList.remove("current"))
+    //add style to current
+    document.querySelector(`[onclick="atmShow('${page}')"]`)?.classList.add("current")
+    switch (page) {
+        case "home":
+            allowKeybinds = true;
+            document.querySelector(".dynContent").innerHTML = `
+            <h2>ATM MENU:</h2>
+            <p>To interact with the ATM you can click on the menu above, OR press user shortcuts on your keyboard:</p>
+            <h4>Shortcuts Cheat-Sheet:</h4>
+            <ul>
+                <li><strong>D</strong> - to deposit money.</li>
+                <li><strong>W</strong> - to withdraw money.</li>
+                <li><strong>C</strong> - to check current balance.</li>
+                <li><strong>P</strong> - to change account pincode.</li>
+                <li><strong>Q</strong> - to quit back to main menu.</li>
+            </ul>`
+            break;
+
+    }
+    allowKeybinds = true;
+}
+document.addEventListener("keydown",
+    /** @param {KeyboardEvent} e */
+    (e) => {
+        if (!allowKeybinds)
+            return;
+
+        switch (e.key) {
+            case "d":
+                atmShow("deposit")
+                break;
+            case "w":
+                atmShow("withdraw")
+                break;
+            case "c":
+                atmShow("check")
+                break;
+            case "p":
+                atmShow("pincode")
+                break;
+            case "q":
+                atmShow("quit")
+                break;
+        }
+    })
