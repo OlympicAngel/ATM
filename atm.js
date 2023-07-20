@@ -115,32 +115,37 @@ function atmShow(page) {
 
         case "deposit":
             container.innerHTML = `
-            <div class="flex breakMobile">
+             <h2><i class="fa-solid fa-money-bills"></i> Deposit:</h2>
+            <div class="flex mobileBreak">
                 <div>
-                    <h2><i class="fa-solid fa-money-bills"></i> Deposit:</h2>
                     <p>You may deposit here money into your account,<br>
-                    <strong>Notice:</strong> you can only deposit bills of <strong>20 / 50 / 100 / 200<strong>.</p>
+                    <strong>Notice:</strong> you can only deposit bills of <strong>20₪ / 50₪ / 100₪ / 200₪<strong>.</p>
                 </div>
                 <form id="depositForm" onsubmit="event.preventDefault(); atmDeposit(depositValue.value)">
                     <p>How much would you like to Deposit?</p>
                     <input id="depositValue" required placeholder="20 / 50 / 100 / 200 ...">
                     <button>Deposit</button>
                 </form>
-            </div>`
+            </div>
+            <hr>
+            <p style="text-align:center">No hidden fees! no risky staff here.. just you know.. give us your money! we will keep it for you ♥</p>`
             break;
 
         case "withdraw":
             container.innerHTML = `
-            <div class="flex breakMobile">
-                <div>
-                    <h2><i class="fa-solid fa-money-bill-transfer"></i> Withdraw:</h2>
-                    <p>You may deposit here money into your account,<br>
-                    <strong>Notice:</strong> you can only deposit bills of <strong>20 / 50 / 100 / 200<strong>.</p>
-                </div>
-                <form id="depositForm" onsubmit="event.preventDefault(); atmDeposit(depositValue.value)">
-                    <p>How much would you like to Deposit?</p>
-                    <input id="depositValue" required placeholder="20 / 50 / 100 / 200 ...">
-                    <button>Deposit</button>
+            <h2><i class="fa-solid fa-money-bill-transfer"></i> Withdraw:</h2>
+            <div>
+                <p>You may withdraw your money into cash!<br>
+                Choose the amount you want:</p>
+            </div>
+            <div class="flex mobileBreak" id="withdrawOptions">
+                <button onclick="atmWithdraw(50)">50₪</button>
+                <button onclick="atmWithdraw(100)">100₪</button>
+                <button onclick="atmWithdraw(150)">150₪</button>
+                <button onclick="atmWithdraw(300)">300₪</button>
+                <form id="withdrawForm" onsubmit="event.preventDefault(); atmWithdraw(~~withdrawValue.value)">
+                    <input id="withdrawValue" min=0 type="number" required placeholder="Custom ₪ amount..">
+                    <button>Withdraw</button>
                 </form>
             </div>`
             break;
@@ -172,6 +177,7 @@ document.addEventListener("keydown", (e) => {
 async function atmDeposit(amount) {
     if (amount <= 0)
         return;
+    amount = Number(amount)
     //check if the amount can be just from 20s
     const multiply20 = amount % 20 == 0;
     //if the amount is more then 50 AND its modulo is 10 then the amount is combination of 1*50 & X*20
@@ -182,10 +188,27 @@ async function atmDeposit(amount) {
     document.getElementById("depositForm").innerHTML = `
     <div style="text-align:center">
         <i class="fa-solid fa-spinner fa-spin-pulse fa-10x"></i>
-        <p>Depositing to your account: ${amount.toLocaleString()}$, Please wait...</p>
+        <p>Depositing to your account: ${amount.toLocaleString()}₪;<br> Please wait...</p>
     </div>`;
     currentUser.balance += amount;
-    await sleep(1000);
+    await sleep(2000);
+    atmShow("home")
+}
+
+async function atmWithdraw(amount) {
+    if (amount <= 0)
+        return;
+
+    if (currentUser.balance < amount)
+        return alert("You don't have enough in your Balance for this operation!")
+
+    document.getElementById("withdrawOptions").innerHTML = `
+    <div style="text-align:center; width:100%">
+        <i class="fa-solid fa-spinner fa-spin-pulse fa-10x"></i>
+        <p>Withdrawing ${amount.toLocaleString()}₪ from your account,<br> Please wait...</p>
+    </div>`;
+    currentUser.balance -= amount;
+    await sleep(2000);
     atmShow("home")
 }
 
