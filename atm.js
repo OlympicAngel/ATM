@@ -42,7 +42,7 @@ function loadCardsView() {
 loadCardsView();
 
 /** @type {Account} stores the current logged in user*/
-let currentUser;
+let currentUser = users[0];
 /**
  * searches for an account by files / value
  * @param {String} searchTerm 
@@ -162,11 +162,49 @@ function atmShow(page) {
                 <div class="currentBalance">${currentUser.balance.toLocaleString()}₪</div>`
             break;
 
+        case "pincode":
+            container.innerHTML = `
+            <h2><i class="fa-solid fa-lock"></i> Change Pincode:</h2>
+            <div class="flex mobileBreak">
+                <p>You may change your pincode here,<br>
+                Notice! this pincode will serve your for later use, please do remember it!</p>
+                  ${createCardHTML(currentUser).outerHTML}
+            </div>
+            <h3>Change pincode form:</h3>
+            <form class="flex halfGap" id="changePincodeForm" onsubmit="event.preventDefault(); atmPincodeChange()">
+                <div class="flex warp mobileBreak">
+                    <div>
+                        <label for="changePin_current">Current Pincode:</label>
+                        <input id="changePin_current" type="password" required minlength="4" pattern="^([0-9]){4}" title="4 letters & numbers ONLY." maxlength="4" alt="sdf" placeholder="****"/>
+                    </div>
+                    <div>
+                        <div>
+                            <label for="changePin_new">New Pincode:</label>
+                            <input id="changePin_new" type="password" required minlength="4" pattern="^([0-9]){4}" title="4 letters & numbers ONLY." maxlength="4" placeholder="****"/>
+                        </div>
+                        <div>
+                            <label for="changePin_verify">Verify New Pincode:</label>
+                            <input id="changePin_verify" type="password" required minlength="4" pattern="^([0-9]){4}" title="4 letters & numbers ONLY." maxlength="4" placeholder="****"/>
+                        </div>
+                    </div>
+                </div>
+               
+                <button>Change</button>
+            </form>`
+            break;
+
         case "quit":
             allowKeybinds = false; //block binds
             currentUser = null; //remove current
-            document.querySelector(".header .displayName").innerText = "Hello Guest"
-            login_screen.click() //show login screen
+            (async () => {
+                document.querySelector(".logoutMsg").style.display = "flex";
+                await sleep(2000);
+                document.querySelector(".header .displayName").innerText = "Hello Guest"
+                login_screen.click() //show login screen
+                document.querySelector(".logoutMsg").style.display = "none";
+
+            })()
+
             break;
     }
 }
@@ -234,6 +272,31 @@ async function atmWithdraw(amount) {
     currentUser.balance -= amount;
     await sleep(2000);
     atmShow("home")
+}
+
+async function atmPincodeChange() {
+    const currentPincode = document.querySelector("#changePin_current").value,
+        newPincode = document.querySelector("#changePin_new").value,
+        nePincodeVerify = document.querySelector("#changePin_verify").value;
+
+    if (currentPincode != currentUser.pincode)
+        return alert("Current pincode entered doesn't match for this account!!")
+
+    if (newPincode != nePincodeVerify)
+        return alert("New pincode & verify pincode miss-match!")
+
+
+    allowKeybinds = false;
+
+    document.getElementById("changePincodeForm").innerHTML = `
+    <div style="text-align:center; width:100%">
+        <i class="fa-solid fa-spinner fa-spin-pulse fa-10x"></i>
+        <p>Changing pincode for account - ${currentUser.cardNumber}..</p>
+    </div>`;
+    currentUser.pincode = newPincode;
+    await sleep(2000);
+    atmShow("home")
+
 }
 
 const sleep = async ms => new Promise(res => setTimeout(res, ms))

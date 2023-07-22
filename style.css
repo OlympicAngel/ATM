@@ -181,10 +181,11 @@ input[name="screens"]:checked+div.screen {
     transition-delay: 0.2s;
     position: relative;
     height: 100%;
+
+    transition: transform 0.2s, opacity 0.2s, position 0.2s, height 20s;
 }
 
 .screen {
-    transition: transform 0.2s, opacity 0.2s, position 0.2s, height 20s;
     transition-delay: 0s;
     opacity: 0;
     transform: scale(0.98);
@@ -265,7 +266,7 @@ button:active {
 }
 
 .ccView {
-    --bg: red;
+    --bg: lightgray;
     width: 45%;
     max-width: 20vw;
     min-width: 260px;
@@ -302,12 +303,12 @@ button:active {
     transform: scale(0.99);
 }
 
-.ccView:nth-child(3n+1) {
-    --bg: lightgray
+.ccView:nth-of-type(3n+1) {
+    --bg: rgb(217 255 242)
 }
 
-.ccView:nth-child(3n) {
-    --bg: lime
+.ccView:nth-of-type(3n) {
+    --bg: rgb(228 197 255)
 }
 
 .ccView::before {
@@ -402,4 +403,62 @@ button:active {
     padding: 0.5em;
     border-radius: 1em;
     border: solid;
+}
+
+
+.logoutMsg {
+    display: none;
+    background-image: radial-gradient(transparent, transparent, rgba(35, 1, 52, 0.604));
+    background-color: #4d8ffd;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    justify-content: center;
+    border-radius: inherit;
+    text-align: center;
+    animation: fadeIn 0.3s alternate;
+    text-shadow: -0.025em 0.05em #000, -0.05em 0.1em #000, -0.075em 0.15em #000, -0.075em 0.15em 1em #000, -0.075em 0.15em 4em #000;
+}
+
+@keyframes fadeIn {
+    0% {
+        filter: opacity(0)
+    }
+
+    100% {
+        filter: opacity(1)
+    }
+}
+
+.logoutMsg div {
+    width: fit-content;
+}
+
+.logoutMsg p {
+    font-weight: 900;
+    font-size: min(2em, 4vw);
+}
+
+#changePincodeForm {
+    flex-direction: column;
+}
+
+#changePincodeForm label {
+    display: block;
+}
+
+#changePincodeForm input {
+    margin: 0;
+}
+
+#changePincodeForm>.flex {
+    min-width: 60%;
+    align-items: stretch;
+    border-radius: 0.5em;
+    background-color: rgba(0, 0, 0, 0.278);
+}
+
+#changePincodeForm>.flex>div {
+    padding: 1em;
+    align-self: flex-start;
 }
