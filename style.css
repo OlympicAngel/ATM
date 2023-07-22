@@ -462,3 +462,47 @@ button:active {
     padding: 1em;
     align-self: flex-start;
 }
+
+.infoView {
+    flex-direction: column;
+}
+
+.infoView>div {
+    width: 100%;
+}
+
+.infoView>div span:first-of-type {
+    font-weight: 400;
+}
+
+.printView {
+    display: none;
+}
+
+@media print {
+    .printView {
+        display: flex;
+        background-color: white;
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 15px;
+        font-size: 14px;
+        line-height: 18px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .printView .ccView {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .printView>*:nth-child(2) {
+        flex: 1;
+        align-items: flex-start;
+    }
+}

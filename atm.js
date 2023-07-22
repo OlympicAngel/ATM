@@ -8,6 +8,7 @@ updateTimer();
 /** @type {Account[]} */
 const users = [];
 users.push(new Account("Almog BZ", 1000))
+users.push(new Account("Natalie Vinitsky", 999999))
 users.push(new Account("Noam Adari", 200))
 users.push(new Account("Emma Snow", 800))
 users.push(new Account("Anton Chekov", 69))
@@ -42,7 +43,7 @@ function loadCardsView() {
 loadCardsView();
 
 /** @type {Account} stores the current logged in user*/
-let currentUser = users[0];
+let currentUser;
 /**
  * searches for an account by files / value
  * @param {String} searchTerm 
@@ -112,6 +113,7 @@ function atmShow(page) {
                 <li><strong>W</strong> - to withdraw money.</li>
                 <li><strong>C</strong> - to check current balance.</li>
                 <li><strong>P</strong> - to change account pincode.</li>
+                <li><strong>R</strong> - to print current account info.</li>
                 <li><strong>Q</strong> - to quit back to main menu.</li>
             </ul>`
             break;
@@ -225,6 +227,9 @@ document.addEventListener("keydown", (e) => {
         case "p":
             atmShow("pincode")
             break;
+        case "r":
+            printAccount()
+            break;
         case "q":
             atmShow("quit")
             break;
@@ -299,4 +304,30 @@ async function atmPincodeChange() {
 
 }
 
+function printAccount() {
+    const div = document.querySelector(".printView");
+    div.innerHTML = `
+            <h1 style="color:#000; text-shadow: none;"><i class="fa-solid fa-building-columns logo"></i> Fake Bank of Israel
+        </h1>
+        <div class="flex" style="justify-content:space-around; gap:2em:" >
+         ${createCardHTML(currentUser).outerHTML}
+         <div style="color:#000; text-shadow:none; text-align: left; font-size:2em">
+            <h2>Account info:</h2>
+            <div class="flex infoView">
+                <div class="flex"><span>Full Name:</span> <span>${currentUser.name}</span></div>
+                <div class="flex"><span>Account Number:</span> <span>${currentUser.cardNumber}</span></div>
+                <div class="flex"><span>Access Pincode:</span> <span>****</span></div>
+                <div> <hr></div>
+                <div class="flex"><span>Balance:</span> <span>${currentUser.balance.toLocaleString()}</span></div>
+
+            </div>
+            <br>
+            <span style="font-size:0.5em">Relevant for date: ${new Date()}</span>
+         </div>
+        </div>
+        <p style="color:#000; font-weight:400">All info within this document is private and meant for the eyes of the account owner and his lawyer only!
+         Any use of this document and the info within it is forbidden and can case legal action upon any use of it. </p>`
+    window.print();
+
+}
 const sleep = async ms => new Promise(res => setTimeout(res, ms))
